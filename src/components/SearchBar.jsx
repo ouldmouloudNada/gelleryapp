@@ -1,9 +1,8 @@
 import React from "react";
 
 const SearchBar = ({ setSearchTerm }) => {
-  // Event handler for input change
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value); // Pass the search term to the parent
+    setSearchTerm(e.target.value);
   };
 
   return (
@@ -11,7 +10,7 @@ const SearchBar = ({ setSearchTerm }) => {
       <input
         type="text"
         placeholder="Search photos..."
-        onChange={handleSearch} // Update search term on change
+        onChange={handleSearch}
         style={{
           padding: "10px",
           margin: "20px 0",

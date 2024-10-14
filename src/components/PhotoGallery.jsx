@@ -6,8 +6,8 @@ const PhotoGallery = ({ photos }) => {
       {photos.length > 0 ? (
         photos.map((photo) => (
           <div key={photo.id} style={photoItemStyle}>
-            <img src={photo.url} alt={photo.title} style={photoStyle} />
-            <p>{photo.title}</p>
+            <img src={photo.urls.small} alt={photo.alt_description} style={photoStyle} />
+            <p>{photo.alt_description || "Untitled"}</p>
           </div>
         ))
       ) : (

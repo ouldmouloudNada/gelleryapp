@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from "react";
+import PhotoGallery from "./components/PhotoGallery";
+import SearchBar from "./components/SearchBar";
+import axios from "axios";
+import './styles.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+
+const App = () => {
+  const [photos, setPhotos] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Fetch random photos from Unsplash when the component mounts
+  useEffect(() => {
+    fetchPhotos();
+  }, []);
+
+  const fetchPhotos = async () => {
+    const accessKey = "h06XXRfLU7D-Ps3GmLGVPbS12xi7QDlVgylhnwmYBuw"; 
+    try {
+      const response = await axios.get(
+        `https://api.unsplash.com/photos/random?count=5&client_id=${accessKey}`
+      );
+      setPhotos(response.data);
+    } catch (error) {
+      console.error("Error fetching photos from Unsplash", error);
+    }
+  };
+
+  // Filter photos based on search term
+  const filteredPhotos = photos.filter((photo) =>
+    photo.alt_description?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <h1>Photo Gallery</h1>
+      <SearchBar setSearchTerm={setSearchTerm} />
+      <PhotoGallery photos={filteredPhotos} />
+    </div>
+  );
+};
 
-export default App
+export default App;
